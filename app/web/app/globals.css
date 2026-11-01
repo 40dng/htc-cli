@@ -1,0 +1,103 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "./tokens.css";
+@plugin "tailwind-scrollbar";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--foreground);
+  --color-primary: var(--brand);
+  --color-primary-foreground: #ffffff;
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: #d9d0d2;
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--secondary);
+  --color-accent-foreground: var(--foreground);
+  --color-destructive: var(--danger);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--brand);
+  --color-sidebar: var(--subtle);
+  --color-sidebar-foreground: #d9d0d2;
+  --color-sidebar-accent: var(--secondary);
+  --color-sidebar-accent-foreground: var(--foreground);
+  --color-sidebar-border: var(--border);
+  --color-icon: var(--icon);
+  --color-brand: var(--brand);
+  --color-brand-2: var(--brand-2);
+  --color-info: var(--info);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-danger: var(--danger);
+  --color-subtle: var(--subtle);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --shadow-ring: 0 0 0 1px var(--border);
+  --shadow-card: 0 2px 4px 0 rgb(0 0 0 / 0.24), 0 1px 2px 0 rgb(0 0 0 / 0.3);
+  --shadow-card-hover: 0 4px 12px 0 rgb(0 0 0 / 0.32), 0 2px 4px 0 rgb(0 0 0 / 0.28);
+  --shadow-popover: 0 0 0 1px var(--border), 0 4px 12px rgb(0 0 0 / 0.35), 0 12px 32px rgb(0 0 0 / 0.45);
+  --ease-out-ui: cubic-bezier(0.2, 0, 0, 1);
+}
+
+/* dark-only: a operacao vive em terminal */
+:root {
+  --radius: 0.5rem;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  html {
+    overscroll-behavior: none;
+  }
+  body {
+    @apply bg-background text-foreground text-[13px] leading-[130%] tracking-[-0.01em];
+    font-variant-numeric: tabular-nums;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .lead-style {
+    @apply text-[15px] leading-[150%] font-semibold tracking-[-0.03em];
+  }
+  .label-style {
+    @apply font-mono text-[11px] leading-none tracking-[-0.02em];
+  }
+  ::selection {
+    background: var(--selection);
+    color: #ffffff;
+  }
+}
+
+@layer components {
+  .scroll-thin {
+    @apply scrollbar-thin scrollbar-track-transparent scrollbar-thumb-[rgb(255_255_255/0.08)] hover:scrollbar-thumb-[rgb(255_255_255/0.16)];
+  }
+  /* bolha do operador: marca diluida, sem hex solto no componente */
+  .bubble-user {
+    border-color: color-mix(in srgb, var(--brand) 45%, var(--border));
+    background: color-mix(in srgb, var(--brand) 10%, var(--card));
+  }
+}
+
+/* reduced motion: movimento/scale/blur so sem preferencia; opacidade sempre */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+

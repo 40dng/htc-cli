@@ -1,0 +1,32 @@
+/* GERADO por scripts/gerar_tema_web.ts — nao editar a mao.
+   Fonte: src/paleta.ts + src/runtime/missao.ts */
+:root {
+  --brand: #CB1B45;
+  --brand-2: #E4597A;
+  --selection: #CB1B45;
+  --success: #4CC38A;
+  --danger: #FF5C5C;
+  --error: #FF5C5C;
+  --warning: #E8B04B;
+  --background: #0b0a0b;
+  --foreground: #efe9ea;
+  --card: #131011;
+  --popover: #171314;
+  --secondary: #1a1517;
+  --muted: #1a1517;
+  --muted-foreground: #a39397;
+  --border: #2a2124;
+  --input: #332629;
+  --icon: #7d6f73;
+  --subtle: #0e0c0d;
+  --info: #5aa9ff;
+
+  /* fases da missao (mesma ordem do runtime) */
+  --phase-recon: var(--info);
+  --phase-enum: var(--info);
+  --phase-vetor: var(--warning);
+  --phase-exploit: var(--brand-2);
+  --phase-shell: var(--success);
+  --phase-pos: var(--brand);
+}
+

@@ -1,0 +1,7 @@
+{
+  "modo": "dois-modelos",
+  "permitidos": ["deepseek-v4.1-flash", "claude-sonnet-4.6"],
+  "padrao": "deepseek-v4.1-flash",
+  "regra": "nenhum outro modelo; nada de gasto com IA - o runtime e opencode local na VPS",
+  "nota": "o opencode local expoe endpoint compativel com OpenAI; o HTC aponta para ele e nao para a nuvem"
+}

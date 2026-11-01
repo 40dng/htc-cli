@@ -1,0 +1,9 @@
+1:"$Sreact.fragment"
+2:I[51858,["./_next/static/chunks/ab3372bdbc49f3d2.js"],"ViewportBoundary"]
+4:I[51858,["./_next/static/chunks/ab3372bdbc49f3d2.js"],"MetadataBoundary"]
+5:"$Sreact.suspense"
+7:I[49310,["./_next/static/chunks/ab3372bdbc49f3d2.js"],"IconMark"]
+:HL["./_next/static/chunks/367057f25664f379.css","style"]
+0:{"buildId":"WR43Izi9jt_3kuFOVB1NH","tree":{"name":"","paramType":null,"paramKey":"","hasRuntimePrefetch":false,"slots":{"children":{"name":"__PAGE__","paramType":null,"paramKey":"__PAGE__","hasRuntimePrefetch":false,"slots":null,"isRootLayout":false}},"isRootLayout":true},"head":["$","$1","h",{"children":[null,["$","$L2",null,{"children":"$@3"}],["$","div",null,{"hidden":true,"children":["$","$L4",null,{"children":["$","$5",null,{"name":"Next.Metadata","children":"$@6"}]}]}],null]}],"isHeadPartial":false,"staleTime":300}
+3:[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1"}]]
+6:[["$","title","0",{"children":"HTC"}],["$","meta","1",{"name":"description","content":"CLI Pessoal de MX"}],["$","link","2",{"rel":"icon","href":"/icon.svg?icon.78d75bab.svg","sizes":"any","type":"image/svg+xml"}],["$","$L7","3",{}]]

@@ -1,0 +1,4 @@
+// HTC: os antigos slash commands "de operacao" (atacar/pwn/snipar/fc/bpon/opsec/checkip)
+// eram prompts maquiados, nao comandos. Foram removidos do registro.
+const HTC_SECURITY_COMMANDS: SlashCommandRegistryEntry[] = [
+];

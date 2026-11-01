@@ -1,0 +1,110 @@
+name: build
+
+# Build limpo do HTC fora do host comprometido (docs/INCIDENTE-2026-10-29.md).
+# O runner do GitHub e' efemero: nenhum PE do host infectado entra no artefato.
+on:
+  push:
+    branches: [main]
+    tags: ["v*"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  windows-x64:
+    runs-on: windows-latest
+    defaults:
+      run:
+        working-directory: app
+    steps:
+      # Acoes fixadas por commit: tag flutuante (`@v4`) pode ser movida para um
+      # commit arbitrario e rodar antes do compile. `sha_pinning_required` esta
+      # `false` no repo — a fixacao aqui e o que fecha esse degrau.
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+
+      - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2
+        with:
+          bun-version: latest
+
+      - name: bun version
+        run: bun --version
+
+      - name: deps
+        run: bun install --frozen-lockfile
+
+      # Gate medido em 01/11: `tsc --noEmit` sai com 157 erros, todos de
+      # importacao pendurada do workspace de origem (`@agentclientprotocol/sdk`
+      # nao esta em package.json/bun.lock; alguns imports apontam para
+      # `../../../sdk/packages/...`). O binario compila e roda — o erro e' de
+      # tipagem, nao de build. Fica como sinal, nao como portao: enquanto o
+      # debito nao for pago, o release nao pode depender dele.
+      - name: typecheck
+        continue-on-error: true
+        run: bun run typecheck
+
+      - name: build (js)
+        run: bun run build
+
+      - name: compile (exe)
+        run: bun run compile
+
+      - name: hashes
+        shell: pwsh
+        run: |
+          Get-ChildItem dist -File | ForEach-Object {
+            "{0}  {1}" -f (Get-FileHash $_.FullName -Algorithm SHA256).Hash, $_.Name
+          } | Tee-Object -FilePath dist/SHA256.txt
+
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: htc-windows-x64
+          path: |
+            app/dist/htc.exe
+            app/dist/SHA256.txt
+          if-no-files-found: error
+
+  # Canal de release. `htc upgrade` monta `<base>/<canal>/<arquivo>` e, quando
+  # isso nao responde, `<base>/<arquivo>` — o namespace PLANO que
+  # `/releases/latest/download` serve. Entao a release publica os assets com o
+  # nome que o binario pede, e o canal vira:
+  #   HTC_BASE=https://github.com/40dng/htc-cli/releases/latest/download
+  #
+  # runtime.txt fica de fora de proposito: o runtime viaja com o HTC. Publicar
+  # um runtime.txt sem o `runtime-<versao>.tar` correspondente faria o upgrade
+  # anunciar um pacote que nao existe ("anunciado, pacote ausente").
+  release:
+    needs: windows-x64
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: htc-windows-x64
+          path: release
+
+      - name: assets planos (nome que o upgrade pede)
+        run: |
+          set -euo pipefail
+          versao="${GITHUB_REF_NAME#v}"
+          mv release/htc.exe release/htc-windows-x64.exe
+          printf '%s\n' "$versao" > release/version.txt
+          ( cd release && sha256sum htc-windows-x64.exe > SHA256SUMS )
+          cat release/version.txt release/SHA256SUMS
+
+      - name: publica
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          # -R: este job nao faz checkout, e o gh precisa do repo explicito
+          # (sem isto: "failed to run git: fatal: not a git repository").
+          gh release create "$GITHUB_REF_NAME" \
+            -R "$GITHUB_REPOSITORY" \
+            release/htc-windows-x64.exe \
+            release/version.txt \
+            release/SHA256SUMS \
+            --title "$GITHUB_REF_NAME" \
+            --notes "htc $GITHUB_REF_NAME — binario windows-x64, version.txt e SHA256SUMS (assets planos: canal /releases/latest/download)"

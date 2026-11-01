@@ -1,0 +1,53 @@
+# build output
+app/dist/
+app/node_modules/
+app/_natives/
+app/bin/
+vendor/
+
+# logs e temporarios de bancada
+*.log
+*.err
+*.tmp
+.tmp/
+.tmp-*/
+ops/state/
+**/ops/state/
+
+# segredos
+.env
+.env.*
+*.pem
+*.key
+*.pfx
+*credentials*
+netrc
+
+# editores e sistema
+.DS_Store
+Thumbs.db
+
+# saida de servidor local (lab do canal)
+*.out
+
+
+# bancada: estado, intel, entrega e notas de operacao nunca vao para o repo publico.
+# O repo publico existe para distribuir o binario; ele nao carrega alvo, metodologia
+# nem historico de incidente. Estes caminhos ficam no disco, fora do indice.
+/ops/
+app/ops/
+entrega/
+docs/INCIDENTE-*.md
+docs/LLM-VS-CODIGO.md
+
+# bancada: harness de operacao (canal, relay, IR, sondas) e caminho do operador.
+# Nao e produto: fica no disco, nunca no repo publico.
+app/scripts/canal-*.sh
+app/scripts/lab-flat.sh
+app/scripts/ir-limpeza.ps1
+app/scripts/_juiz_check.ts
+app/scripts/recusa20.ts
+app/.htc-smoke*
+app/src/e2e-ofensivo.ts
+app/src/e2e-tests.ts
+app/src/test-server.ts
